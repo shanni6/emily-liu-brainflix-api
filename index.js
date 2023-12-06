@@ -1,3 +1,5 @@
+const { v4: uuidv4 } = require("uuid");
+
 const express = require("express");
 
 const app = express();
@@ -340,10 +342,24 @@ let videos = [
     },
 ];
 
+app.use(express.json());
+
 app.listen(8080, () => {
     console.log("app listening on port 8080");
 });
 
 app.get("/videos", (req, res) => {
     res.json(videos);
+});
+
+app.get("/videos/:id", (req, res) => {
+    res.json(videos.find((video) => video.id === req.params.id));
+});
+
+app.post("/videos", (req, res) => {
+    const id = uuidv4();
+    const video = req.body;
+    video.id = id;
+    videos.push(video);
+    res.json(video);
 });
