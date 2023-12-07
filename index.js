@@ -24,4 +24,14 @@ app.get("/register", (req, res) => {
     });
 });
 
+app.use((req, res, next) => {
+    if (!req.query.api_key) {
+        return res.json({
+            message:
+                "api_key query parameter required. You may use any string (including your name) as your api_key.",
+        });
+    }
+    next();
+});
+
 app.use("/videos", videosRoute);
