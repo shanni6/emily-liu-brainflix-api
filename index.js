@@ -357,9 +357,9 @@ app.get("/videos/:id", (req, res) => {
 });
 
 app.post("/videos", (req, res) => {
-    const id = uuidv4();
     const video = req.body;
-    video.id = id;
+    video.id = uuidv4();
+    video.timestamp = Date.now();
     videos.push(video);
     res.json(video);
 });
