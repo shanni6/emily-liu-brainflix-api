@@ -34,4 +34,23 @@ router.post("/", (req, res) => {
     res.json(video);
 });
 
+router.post("/:id/comments", (req, res) => {
+    const videoId = req.params.id;
+    const newComment = req.body;
+    newComment.id = uuidv4();
+    newComment.timestamp = Date.now();
+    newComment.likes = 0;
+    let data = fs.readFileSync("data/videos.json", "utf-8");
+    data = JSON.parse(data);
+
+    for (let i = 0; i < data.length; i++) {
+        if (data[i].id === videoId) {
+            data[i].comments.push(newComment);
+        }
+    }
+    fs.writeFileSync("data/videos.json", JSON.stringify(data));
+
+    res.json(newComment);
+});
+
 module.exports = router;

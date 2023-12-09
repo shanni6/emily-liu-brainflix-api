@@ -8,6 +8,7 @@ const videosRoute = require("./routes/videos");
 
 app.use(express.json());
 app.use(cors());
+app.use(express.static("public"));
 
 app.listen(8080, () => {
     console.log("app listening on port 8080");
@@ -26,14 +27,14 @@ app.get("/register", (req, res) => {
     });
 });
 
-app.use((req, res, next) => {
-    if (!req.query.api_key) {
-        return res.json({
-            message:
-                "api_key query parameter required. You may use any string (including your name) as your api_key.",
-        });
-    }
-    next();
-});
+// app.use((req, res, next) => {
+//     if (!req.query.api_key) {
+//         return res.json({
+//             message:
+//                 "api_key query parameter required. You may use any string (including your name) as your api_key.",
+//         });
+//     }
+//     next();
+// });
 
 app.use("/videos", videosRoute);
