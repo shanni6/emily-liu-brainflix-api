@@ -1,4 +1,5 @@
 const { v4: uuidv4 } = require("uuid");
+const cors = require("cors");
 
 const express = require("express");
 
@@ -6,6 +7,7 @@ const app = express();
 const videosRoute = require("./routes/videos");
 
 app.use(express.json());
+app.use(cors());
 
 app.listen(8080, () => {
     console.log("app listening on port 8080");
