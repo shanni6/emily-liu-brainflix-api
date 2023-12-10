@@ -38,7 +38,7 @@ router.post("/", (req, res) => {
     video.comments = [];
     video.duration = "0:00";
     video.image = "upload.jpg";
-    
+
     data.push(video);
     fs.writeFileSync("data/videos.json", JSON.stringify(data));
     res.json(video);
@@ -50,7 +50,7 @@ router.post("/:id/comments", (req, res) => {
     newComment.id = uuidv4();
     newComment.timestamp = Date.now();
     newComment.likes = 0;
-    
+
     let data = fs.readFileSync("data/videos.json", "utf-8");
     data = JSON.parse(data);
 
@@ -76,9 +76,24 @@ router.delete("/:videoId/comments/:commentId", (req, res) => {
                     const comment = data[i].comments[j];
                     data[i].comments.splice(j, 1);
                     fs.writeFileSync("data/videos.json", JSON.stringify(data));
-                    res.json(comment);
+                    return res.json(comment);
                 }
             }
+        }
+    }
+});
+router.put("/:id/likes", (req, res) => {
+    const videoId = req.params.id;
+
+    let data = fs.readFileSync("data/videos.json", "utf-8");
+    data = JSON.parse(data);
+    for (let i = 0; i < data.length; i++) {
+        if (data[i].id === videoId) {
+            data[i].likes = Number.parseInt(data[i].likes.replace(",", "")) + 1;
+            data[i].likes = data[i].likes.toLocaleString();
+            fs.writeFileSync("data/videos.json", JSON.stringify(data));
+
+            return res.json(data[i]);
         }
     }
 });
