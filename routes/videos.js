@@ -38,6 +38,7 @@ router.post("/", (req, res) => {
     video.comments = [];
     video.duration = "0:00";
     video.image = "upload.jpg";
+    video.video = "video.mp4";
 
     data.push(video);
     fs.writeFileSync("data/videos.json", JSON.stringify(data));
@@ -92,7 +93,6 @@ router.put("/:id/likes", (req, res) => {
             data[i].likes = Number.parseInt(data[i].likes.replace(",", "")) + 1;
             data[i].likes = data[i].likes.toLocaleString();
             fs.writeFileSync("data/videos.json", JSON.stringify(data));
-
             return res.json(data[i]);
         }
     }
